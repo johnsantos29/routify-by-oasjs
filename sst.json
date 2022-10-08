@@ -1,5 +1,5 @@
 {
-  "name": "routify",
-  "region": "us-east-1",
-  "main": "stacks/index.ts"
+    "name": "routify",
+    "region": "ap-southeast-2",
+    "main": "stacks/index.ts"
 }

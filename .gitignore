@@ -10,3 +10,13 @@ node_modules
 
 # local env files
 .env*.local
+
+# jest files
+coverage
+
+#
+.idea
+.vscode
+
+cdk.context.json
+.prettierignore
