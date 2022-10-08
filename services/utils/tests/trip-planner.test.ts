@@ -13,9 +13,9 @@ vi.mock("axios", () => ({
 
 import { test, expect, vi, beforeEach, afterEach } from "vitest";
 import axios, { AxiosRequestConfig } from "axios";
-import * as aws from "../utils/aws";
-import * as urls from "../utils/urls";
-import { getStopInfo } from "../utils/trip-planner";
+import * as aws from "../aws";
+import * as urls from "../urls";
+import { getStopInfo } from "../trip-planner";
 
 const mockAxios = await vi.importMock<typeof axios>("axios");
 let axiosGetMockCalls: [url: string, config?: AxiosRequestConfig<unknown>][];
@@ -60,7 +60,7 @@ test("getStopInfo - calls the correct url and config", async () => {
     const expectedUrl = "some-url";
     const expectedConfig = {
         headers: {
-            Authorization: `Bearer some-key`,
+            Authorization: `apikey some-key`,
         },
     };
 

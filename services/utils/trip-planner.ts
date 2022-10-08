@@ -8,11 +8,12 @@ export const getStopInfo = async (stopId: string) => {
 
     const axiosInstance = getAxiosInstance();
     const axiosConfig = {
-        headers: { Authorization: `Bearer ${tripPlannerApiKey}` },
+        headers: { Authorization: `apikey ${tripPlannerApiKey}` },
     };
 
     const url = getTripPlannerStopFinderUrl(stopId);
-    console.log("url = ", url);
+    console.log(url);
+
     try {
         const response = await axiosInstance.get(url, axiosConfig);
         return response.data;

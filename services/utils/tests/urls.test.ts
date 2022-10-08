@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { baseTNSWUrl, getTripPlannerStopFinderUrl } from "../utils/urls";
+import { baseTNSWUrl, getTripPlannerStopFinderUrl } from "../urls";
 
 test("returns the correct stop_finder URL", () => {
     const stopId = "12345";

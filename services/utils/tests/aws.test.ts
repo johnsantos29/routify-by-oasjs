@@ -1,6 +1,6 @@
 import { test, beforeEach, expect, vi, afterEach } from "vitest";
-import * as aws from "../utils/aws";
-import { errorGetParameterStore } from "../utils/aws";
+import * as aws from "../aws";
+import { errorGetParameterStore } from "../aws";
 
 // mock aws-sdk SSM
 const mockedGetParameter = vi.fn();

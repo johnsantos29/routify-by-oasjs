@@ -8,7 +8,7 @@ vi.mock("axios", () => {
 
 import { AxiosInstance } from "axios";
 import { beforeEach, test, expect, it, vi } from "vitest";
-import { getAxiosInstance } from "../utils/axios";
+import { getAxiosInstance } from "../axios";
 
 const axiosCreateMockCalls = mockCreate.mock.calls;
 const mockAxiosCreate: AxiosInstance = {
