@@ -13,7 +13,6 @@ vi.mock("axios", () => ({
 
 import { test, expect, vi, beforeEach, afterEach } from "vitest";
 import axios, { AxiosRequestConfig } from "axios";
-import * as aws from "../aws";
 import * as urls from "../urls";
 import {
     getStopInfo,
@@ -34,7 +33,6 @@ const mockedResponse = {
 };
 
 const url = "some-url";
-const mockedAwsKey = "some-key";
 
 const someId = "123";
 const axiosConfig = { headers: { Authorization: "sample-authorization" } };
@@ -49,7 +47,6 @@ afterEach(() => {
 });
 
 test("getStopInfo - throws an error if axios get fails", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerStopFinderUrl").mockReturnValueOnce(url);
 
     await expect(getStopInfo(someId, axiosConfig)).rejects.toThrow(errorGetStopInfo);
@@ -85,7 +82,6 @@ const trip: Trip = {
 };
 
 test("getJourneyListBetween2Locations - throws an error if axios get fails", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerTripUrl").mockReturnValueOnce(url);
 
     await expect(getJourneyListBetween2Locations(trip, axiosConfig)).rejects.toThrow(
@@ -94,7 +90,6 @@ test("getJourneyListBetween2Locations - throws an error if axios get fails", asy
 });
 
 test("getJourneyListBetween2Locations - calls the correct url and config", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerTripUrl").mockReturnValueOnce(url);
 
     mockGet.mockResolvedValueOnce(mockedResponse);
@@ -109,7 +104,6 @@ test("getJourneyListBetween2Locations - calls the correct url and config", async
 });
 
 test("getJourneyListBetween2Locations - returns retrieved data", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     mockGet.mockResolvedValueOnce(mockedResponse);
 
     await expect(getJourneyListBetween2Locations(trip, axiosConfig)).resolves.toEqual({ sample: "data" });

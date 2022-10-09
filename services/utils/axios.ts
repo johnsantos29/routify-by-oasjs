@@ -7,3 +7,14 @@ export const getAxiosConfig = async (key: string): Promise<AxiosRequestConfig<an
     const apiKey = await getParameter(key);
     return { headers: { Authorization: `apikey ${apiKey}` } };
 };
+
+export const getResponseData = async (url: string, axiosConfig: AxiosRequestConfig, customErrorMessage: string) => {
+    const axiosInstance = getAxiosInstance();
+
+    try {
+        const response = await axiosInstance.get(url, axiosConfig);
+        return response.data;
+    } catch (err) {
+        throw new Error(customErrorMessage);
+    }
+};
