@@ -36,6 +36,9 @@ const mockedResponse = {
 const url = "some-url";
 const mockedAwsKey = "some-key";
 
+const someId = "123";
+const axiosConfig = { headers: { Authorization: "sample-authorization" } };
+
 // getStopInfo
 beforeEach(() => {
     axiosGetMockCalls = mockAxios.get.mock.calls;
@@ -45,45 +48,31 @@ afterEach(() => {
     mockGet.mockClear();
 });
 
-test("getStopInfo - throws an error if fails to get trip planner api key", async () => {
-    vi.spyOn(aws, "getParameter").mockImplementationOnce(() => {
-        throw new Error(aws.errorGetParameterStore);
-    });
-
-    await expect(getStopInfo("123")).rejects.toThrow(aws.errorGetParameterStore);
-});
-
 test("getStopInfo - throws an error if axios get fails", async () => {
     vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerStopFinderUrl").mockReturnValueOnce(url);
 
-    await expect(getStopInfo("123")).rejects.toThrow(errorGetStopInfo);
+    await expect(getStopInfo(someId, axiosConfig)).rejects.toThrow(errorGetStopInfo);
 });
 
 test("getStopInfo - calls the correct url and config", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerStopFinderUrl").mockReturnValueOnce(url);
 
     mockGet.mockResolvedValueOnce(mockedResponse);
 
     const expectedUrl = url;
-    const expectedConfig = {
-        headers: {
-            Authorization: "apikey some-key",
-        },
-    };
+    const expectedConfig = axiosConfig;
 
-    await getStopInfo("123");
+    await getStopInfo(someId, axiosConfig);
 
     expect(axiosGetMockCalls[0][0]).toEqual(expectedUrl);
     expect(axiosGetMockCalls[0][1]).toStrictEqual(expectedConfig);
 });
 
 test("getStopInfo - returns retrieved data", async () => {
-    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     mockGet.mockResolvedValueOnce(mockedResponse);
 
-    await expect(getStopInfo("123")).resolves.toEqual({ sample: "data" });
+    await expect(getStopInfo(someId, axiosConfig)).resolves.toEqual({ sample: "data" });
 });
 
 // getJourneyListBetween2Locations
@@ -95,19 +84,13 @@ const trip: Trip = {
     tripTime: "456456",
 };
 
-test("getJourneyListBetween2Locations - throws an error if fails to get trip planner api key", async () => {
-    vi.spyOn(aws, "getParameter").mockImplementationOnce(() => {
-        throw new Error(aws.errorGetParameterStore);
-    });
-
-    await expect(getJourneyListBetween2Locations(trip)).rejects.toThrow(aws.errorGetParameterStore);
-});
-
 test("getJourneyListBetween2Locations - throws an error if axios get fails", async () => {
     vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     vi.spyOn(urls, "getTripPlannerTripUrl").mockReturnValueOnce(url);
 
-    await expect(getJourneyListBetween2Locations(trip)).rejects.toThrow(errorGetJourneyListBetween2Locations);
+    await expect(getJourneyListBetween2Locations(trip, axiosConfig)).rejects.toThrow(
+        errorGetJourneyListBetween2Locations
+    );
 });
 
 test("getJourneyListBetween2Locations - calls the correct url and config", async () => {
@@ -117,13 +100,9 @@ test("getJourneyListBetween2Locations - calls the correct url and config", async
     mockGet.mockResolvedValueOnce(mockedResponse);
 
     const expectedUrl = url;
-    const expectedConfig = {
-        headers: {
-            Authorization: "apikey some-key",
-        },
-    };
+    const expectedConfig = axiosConfig;
 
-    await getJourneyListBetween2Locations(trip);
+    await getJourneyListBetween2Locations(trip, axiosConfig);
 
     expect(axiosGetMockCalls[0][0]).toEqual(expectedUrl);
     expect(axiosGetMockCalls[0][1]).toStrictEqual(expectedConfig);
@@ -133,5 +112,5 @@ test("getJourneyListBetween2Locations - returns retrieved data", async () => {
     vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
     mockGet.mockResolvedValueOnce(mockedResponse);
 
-    await expect(getJourneyListBetween2Locations(trip)).resolves.toEqual({ sample: "data" });
+    await expect(getJourneyListBetween2Locations(trip, axiosConfig)).resolves.toEqual({ sample: "data" });
 });

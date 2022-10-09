@@ -7,8 +7,9 @@ vi.mock("axios", () => {
 });
 
 import { AxiosInstance } from "axios";
-import { beforeEach, test, expect, it, vi } from "vitest";
-import { getAxiosInstance } from "../axios";
+import { beforeEach, test, expect, vi } from "vitest";
+import { getAxiosInstance, getAxiosConfig } from "../axios";
+import * as aws from "../aws";
 
 const axiosCreateMockCalls = mockCreate.mock.calls;
 const mockAxiosCreate: AxiosInstance = {
@@ -37,4 +38,20 @@ test("returns an instance of axios", () => {
     const expected = mockAxiosCreate;
 
     expect(actual).toEqual(expected);
+});
+
+test("throws an error if fails to get trip planner api key", async () => {
+    vi.spyOn(aws, "getParameter").mockImplementationOnce(() => {
+        throw new Error(aws.errorGetParameterStore);
+    });
+
+    await expect(getAxiosConfig("123")).rejects.toThrow(aws.errorGetParameterStore);
+});
+
+test("returns the axios config", async () => {
+    const mockedAwsKey = "some-key";
+    vi.spyOn(aws, "getParameter").mockResolvedValueOnce(mockedAwsKey);
+    const expected = { headers: { Authorization: `apikey ${mockedAwsKey}` } };
+
+    await expect(getAxiosConfig("123")).resolves.toStrictEqual(expected);
 });
