@@ -1,5 +1,4 @@
-import { SecretsStack } from "./secrets";
-import { use, Stack, StackContext, Api, Function } from "@serverless-stack/resources";
+import { Stack, StackContext, Api, Function } from "@serverless-stack/resources";
 import { CustomDomain, ApiHandlers } from "../types/routify";
 
 const permissions = ["events", "ssm", "rds-data"];
@@ -17,8 +16,6 @@ const routifyApi = (stack: Stack, handlers: ApiHandlers, domain: CustomDomain) =
     });
 
 export const APIStack = ({ app, stack }: StackContext) => {
-    // const { vpcId } = use(SecretsStack);
-
     // lambdas
     const homeTimeHandler = new Function(stack, "homeTime", {
         architecture: "arm_64",
