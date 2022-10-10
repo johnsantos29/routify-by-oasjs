@@ -1,6 +1,11 @@
 import { test, expect } from "vitest";
-import { Trip } from "../../../types/trip-planner";
-import { baseTNSWUrl, getTripPlannerStopFinderUrl, getTripPlannerTripUrl } from "../urls";
+import { Departure, Trip } from "../../../types/trip-planner";
+import {
+    baseTNSWUrl,
+    getTripPlannerDepartureInfoUrl,
+    getTripPlannerStopFinderUrl,
+    getTripPlannerTripUrl,
+} from "../urls";
 
 test("returns the correct stop_finder URL", () => {
     const stopId = "12345";
@@ -25,4 +30,19 @@ test("returns the correct trip URL", () => {
         "&version=10.2.1.42&itOptionsActive=1&cycleSpeed=16";
 
     expect(getTripPlannerTripUrl(trip)).toEqual(expected);
+});
+
+test("returns the correct departure info URL", () => {
+    const dep: Departure = {
+        originId: "123",
+        tripDate: "123123",
+        tripTime: "456456",
+    };
+    const expected =
+        `${baseTNSWUrl}tp/departure_mon?outputFormat=rapidJSON` +
+        `&coordOutputFormat=EPSG%3A4326&mode=direct&type_dm=stop` +
+        `&name_dm=${dep.originId}&itdDate=${dep.tripDate}&itdTime=${dep.tripTime}` +
+        `&departureMonitorMacro=true&TfNSWDM=true&version=10.2.1.42`;
+
+    expect(getTripPlannerDepartureInfoUrl(dep)).toEqual(expected);
 });

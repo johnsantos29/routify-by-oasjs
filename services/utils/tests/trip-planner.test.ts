@@ -19,8 +19,10 @@ import {
     errorGetStopInfo,
     getJourneyListBetween2Locations,
     errorGetJourneyListBetween2Locations,
+    getDepartureInfo,
+    errorGetDepartureInfo,
 } from "../trip-planner";
-import { Trip } from "../../../types/trip-planner";
+import { Departure, Trip } from "../../../types/trip-planner";
 
 // mock variables
 const mockAxios = await vi.importMock<typeof axios>("axios");
@@ -107,4 +109,37 @@ test("getJourneyListBetween2Locations - returns retrieved data", async () => {
     mockGet.mockResolvedValueOnce(mockedResponse);
 
     await expect(getJourneyListBetween2Locations(trip, axiosConfig)).resolves.toEqual({ sample: "data" });
+});
+
+// getDepartureInfo
+const dep: Departure = {
+    originId: "123",
+    tripDate: "123123",
+    tripTime: "456456",
+};
+
+test("getDepartureInfo - throws an error if axios get fails", async () => {
+    vi.spyOn(urls, "getTripPlannerDepartureInfoUrl").mockReturnValueOnce(url);
+
+    await expect(getDepartureInfo(dep, axiosConfig)).rejects.toThrow(errorGetDepartureInfo);
+});
+
+test("getDepartureInfo - calls the correct url and config", async () => {
+    vi.spyOn(urls, "getTripPlannerDepartureInfoUrl").mockReturnValueOnce(url);
+
+    mockGet.mockResolvedValueOnce(mockedResponse);
+
+    const expectedUrl = url;
+    const expectedConfig = axiosConfig;
+
+    await getDepartureInfo(dep, axiosConfig);
+
+    expect(axiosGetMockCalls[0][0]).toEqual(expectedUrl);
+    expect(axiosGetMockCalls[0][1]).toStrictEqual(expectedConfig);
+});
+
+test("getDepartureInfo - returns retrieved data", async () => {
+    mockGet.mockResolvedValueOnce(mockedResponse);
+
+    await expect(getDepartureInfo(dep, axiosConfig)).resolves.toEqual({ sample: "data" });
 });
