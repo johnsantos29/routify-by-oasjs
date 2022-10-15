@@ -22,3 +22,7 @@ export const getStopNamesAll = (journeys: Journeys) => {
 
     return stopNamesAll;
 };
+
+export const getPlatform = (stationName: string) => {
+    return stationName.split(", ")[1];
+};

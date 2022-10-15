@@ -5,6 +5,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     test: {
         globals: true,
+        setupFiles: ["./test-globals.ts"],
         environment: "node",
         coverage: {
             lines: 90,
