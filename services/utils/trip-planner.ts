@@ -1,6 +1,6 @@
 import { getTripPlannerDepartureInfoUrl, getTripPlannerStopFinderUrl, getTripPlannerTripUrl } from "./urls";
 import { getResponseData } from "./axios";
-import { Trip, Departure } from "../../types/trip-planner";
+import { Trip, Departure, Journeys } from "../../types/trip-planner";
 import { AxiosRequestConfig } from "axios";
 
 export const errorGetStopInfo = "Failed - getStopInfo";
@@ -12,7 +12,10 @@ export const getStopInfo = async (stopId: string, axiosConfig: AxiosRequestConfi
     return await getResponseData(url, axiosConfig, errorGetStopInfo);
 };
 
-export const getJourneyListBetween2Locations = async (trip: Trip, axiosConfig: AxiosRequestConfig) => {
+export const getJourneyListBetween2Locations = async (
+    trip: Trip,
+    axiosConfig: AxiosRequestConfig
+): Promise<Journeys> => {
     const url = getTripPlannerTripUrl(trip);
     return await getResponseData(url, axiosConfig, errorGetJourneyListBetween2Locations);
 };

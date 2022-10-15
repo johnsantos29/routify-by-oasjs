@@ -28,4 +28,6 @@ export type JourneyItem = {
     legs: Array<LegItem>;
 };
 
-export type Journeys = Array<JourneyItem>;
+export type Journeys = {
+    journeys: Array<JourneyItem>;
+};
