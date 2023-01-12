@@ -6,4 +6,4 @@ Backend APIs to retrieve info from the Transport NSW dev portal
 - TypeScript
 - sst (serverless stack) framework
 - vitest test framework
-- AWS lambdas
+- AWS lambdas, system manager
